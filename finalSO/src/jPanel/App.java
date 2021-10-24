@@ -1,12 +1,13 @@
 package jPanel;
-
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 public class App {
     public static void main(String[] args) throws Exception {
         JFrame fen = new JFrame("Projeto Final Sistemas Operacionais 26/10/2021");
         fen.setSize(300,300);
 
-        JPanel pan = new JPanel();
+        //JPanel pan = new JPanel();
         //fen.setContentPane(pan);
 
         JPanel l1 = new JPanel();
@@ -32,9 +33,9 @@ public class App {
         l10.setLayout(new BoxLayout(l10, BoxLayout.LINE_AXIS));
 
         l1.add(new JLabel("Professor: Marcelo Zanchetta do Nascimento"));
-        l2.add(new JLabel("Igor Augusto - Matricula"));
-        l3.add(new JLabel("João Victor - Matricula"));
-        l4.add(new JLabel("Lucas - Matricula"));
+        l2.add(new JLabel("Igor Augusto Costa e Souza - 11221EMT008"));
+        l3.add(new JLabel("João Victor de Oliveira - 11611BSI215"));
+        l4.add(new JLabel("Lucas Albino Martins - 12011ECP022"));
         l5.add(new JLabel("Nicolas Fischmann - 12011EMT032"));
         JButton fifo = new JButton("FIFO - First In First Out");
         //fen.getContentPane().add(fifo);
@@ -65,7 +66,50 @@ public class App {
         box.add(l9);
         box.add(l10);
 
+        SequenciaPaginas sequencia = new SequenciaPaginas();
+        fifo.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                sequencia.escreverSequencia();
+
+            }
+        });
+
+        otm.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                sequencia.escreverSequencia();
+                
+            }
+        });
+
+        lru.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                sequencia.escreverSequencia();
+                
+            }
+        });
+
+        sc.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                sequencia.escreverSequencia();
+                
+            }
+        });
+
+        wsm.addActionListener(new ActionListener(){
+             public void actionPerformed(ActionEvent e){
+                sequencia.escreverSequencia();
+                
+            }
+        });
+
+
+
+
+
         fen.getContentPane().add(box);
         fen.setVisible(true);
+        
+        
+        
     }
 }
