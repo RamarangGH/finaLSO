@@ -1,7 +1,7 @@
 # finaLSO
 Projeto final Sistemas Operacionais UFU
 
-Execução do programa: 
-**\finaLSO\finalSO\src\jPanel\App.java
 
-
+Config do VSC:
+https://www.youtube.com/watch?v=H67COH9F718&ab_channel=CoolITHelp
+com SDK 11
