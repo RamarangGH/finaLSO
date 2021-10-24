@@ -49,4 +49,7 @@ public class SequenciaPaginas {
         jan.setVisible(true);
     }
 
+    public int[] getSequencia(){ return seq; }
+    public void setSequencia(int[] seq){ this.seq = seq; }
+
 }

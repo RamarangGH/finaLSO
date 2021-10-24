@@ -7,8 +7,7 @@ public class App {
         JFrame fen = new JFrame("Projeto Final Sistemas Operacionais 26/10/2021");
         fen.setSize(300,300);
 
-        //JPanel pan = new JPanel();
-        //fen.setContentPane(pan);
+        /** CRIACAO DA INTERFACE DE COMECO */
 
         JPanel l1 = new JPanel();
         JPanel l2 = new JPanel();
@@ -65,8 +64,13 @@ public class App {
         box.add(l8);
         box.add(l9);
         box.add(l10);
+        
+        
 
+        /** DEFINICAO DAS AÇÕES DOS BOTTÕES */
         SequenciaPaginas sequencia = new SequenciaPaginas();
+        Simulacao simu = new Simulacao(sequencia);
+        
         fifo.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
@@ -101,10 +105,6 @@ public class App {
                 
             }
         });
-
-
-
-
 
         fen.getContentPane().add(box);
         fen.setVisible(true);
