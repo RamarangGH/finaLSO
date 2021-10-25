@@ -5,7 +5,7 @@ import javax.swing.*;
 public class App {
     public static void main(String[] args) throws Exception {
         JFrame fen = new JFrame("Projeto Final Sistemas Operacionais 26/10/2021");
-        fen.setSize(300,300);
+        fen.setSize(600,400);
 
         /** CRIACAO DA INTERFACE DE COMECO */
 
@@ -19,6 +19,8 @@ public class App {
         JPanel l8 = new JPanel();
         JPanel l9 = new JPanel();
         JPanel l10 = new JPanel();
+        JPanel l11 = new JPanel();
+        JPanel l12 = new JPanel();
 
         l1.setLayout(new BoxLayout(l1, BoxLayout.LINE_AXIS));
         l2.setLayout(new BoxLayout(l2, BoxLayout.LINE_AXIS));
@@ -30,7 +32,7 @@ public class App {
         l8.setLayout(new BoxLayout(l8, BoxLayout.LINE_AXIS));
         l9.setLayout(new BoxLayout(l9, BoxLayout.LINE_AXIS));
         l10.setLayout(new BoxLayout(l10, BoxLayout.LINE_AXIS));
-
+        l11.setLayout(new BoxLayout(l11, BoxLayout.LINE_AXIS));
         l1.add(new JLabel("Professor: Marcelo Zanchetta do Nascimento"));
         l2.add(new JLabel("Igor Augusto Costa e Souza - 11221EMT008"));
         l3.add(new JLabel("João Victor de Oliveira - 11611BSI215"));
@@ -51,7 +53,8 @@ public class App {
         JButton wsm = new JButton("WSM - Working-Set Model");
         //fen.getContentPane().add(wsm);
         l10.add(wsm);
-
+        JButton lancar = new JButton("comecar");
+        l12.add(lancar);
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
         box.add(l1);
@@ -64,50 +67,142 @@ public class App {
         box.add(l8);
         box.add(l9);
         box.add(l10);
+        box.add(l11);
+        box.add(l12);
         
         
 
         /** DEFINICAO DAS AÇÕES DOS BOTTÕES */
         SequenciaPaginas sequencia = new SequenciaPaginas();
         Simulacao simu = new Simulacao(sequencia);
-        
+
         fifo.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
-
+                simu.setTipoSimulacao(0);
+                l11.setVisible(true);
             }
         });
 
         otm.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
-                
+                simu.setTipoSimulacao(1);
+                l11.setVisible(true);
             }
         });
 
         lru.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
-                
+                simu.setTipoSimulacao(2);
+                l11.setVisible(true);
             }
         });
 
         sc.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
-                
+                simu.setTipoSimulacao(3);
+                l11.setVisible(true);
             }
         });
 
         wsm.addActionListener(new ActionListener(){
-             public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e){
                 sequencia.escreverSequencia();
-                
+                simu.setTipoSimulacao(4);
+                l11.setVisible(true);
             }
         });
 
+        lancar.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ 
+                simu.simular();
+                simu.gerarJanela();
+                fen.setVisible(false);
+            }
+        });
+        l11.add(new JLabel("Quantidade Quadros de RAM : "));
+        JButton um = new JButton("1");
+        um.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(1);
+                l12.setVisible(true);
+            }
+        });
+        JButton dois = new JButton("2");
+        dois.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(2);
+                l12.setVisible(true);
+            }
+        });
+        JButton treis = new JButton("3");
+        treis.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(3);
+                l12.setVisible(true);
+            }
+        });
+        JButton quatro = new JButton("4");
+        quatro.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(4);
+                System.out.println("4");
+                l12.setVisible(true);
+            }
+        });
+        JButton cinco = new JButton("5");
+        cinco.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(5);
+                l12.setVisible(true);
+            }
+        });
+        JButton seis = new JButton("6");
+        seis.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(6);
+                l12.setVisible(true);
+            }
+        });
+        JButton sete = new JButton("7");
+        sete.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(7);
+                System.out.println("7");
+                l12.setVisible(true);
+            }
+        });
+        JButton oito = new JButton("8");
+        oito.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(8);
+                l12.setVisible(true);
+            }
+        });
+
+        JButton nove = new JButton("9");
+        nove.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                simu.setNumeroQuadros(9);
+                l12.setVisible(true);
+            }
+        });
+        l11.add(um);
+        l11.add(dois);
+        l11.add(treis);
+        l11.add(quatro);
+        l11.add(cinco);
+        l11.add(seis);
+        l11.add(sete);
+        l11.add(oito);
+        l11.add(nove);
         fen.getContentPane().add(box);
         fen.setVisible(true);
+        l11.setVisible(false);
+        l12.setVisible(false);
         
         
         

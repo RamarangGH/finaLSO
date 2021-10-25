@@ -32,12 +32,21 @@ public class SequenciaPaginas {
 
     public void escreverSequencia(){
         JFrame jan = new JFrame("Exemplo : 0;5;4;1;2");
-        jan.setSize(500,100);
+        jan.setSize(500,150);
         JTextField entrada = new JTextField();
         JButton validationButton= new JButton("Validar");
+        JButton aleatorio = new JButton("Aleatorio");
         validationButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 definirComString(entrada.getText());
+                jan.setVisible(false);
+            }
+        });
+        aleatorio.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                Random rand = new Random();
+                int num = rand.nextInt(50);
+                definirAleatorio(num);
                 jan.setVisible(false);
             }
         });
@@ -45,6 +54,8 @@ public class SequenciaPaginas {
         String center = BorderLayout.CENTER;
         jan.getContentPane().add(entrada, center);
         String north = BorderLayout.NORTH;
+        String south = BorderLayout.SOUTH;
+        jan.getContentPane().add(aleatorio, south);
         jan.getContentPane().add(validationButton, north);
         jan.setVisible(true);
     }
