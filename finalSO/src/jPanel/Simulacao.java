@@ -52,18 +52,27 @@ public class Simulacao {
         JPanel l3 = new JPanel();
         JPanel l4 = new JPanel();
         JPanel l5 = new JPanel();
+        JPanel l6 = new JPanel();
+
         l1.setLayout(new BoxLayout(l1, BoxLayout.LINE_AXIS));
         l2.setLayout(new BoxLayout(l2, BoxLayout.LINE_AXIS));
         l3.setLayout(new BoxLayout(l3, BoxLayout.LINE_AXIS));
         l4.setLayout(new BoxLayout(l4, BoxLayout.LINE_AXIS));
         l5.setLayout(new BoxLayout(l5, BoxLayout.LINE_AXIS));
+        l6.setLayout(new BoxLayout(l6, BoxLayout.LINE_AXIS));
+        JButton fechar = new JButton("FECHAR PROGRAMA");
+        fechar.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){ 
+                System.exit(0);
+            }
+        });
         l1.add(new JLabel("Numeros Paginas : "));
         l1.add(new JLabel(Arrays.toString(paginas.getSequencia())));
         l2.add(new JLabel("Page Faults : "));
         l2.add(this.pageFLabel);
         l3.add(new JLabel("Hit Rate : "));
         l3.add(this.hitRLabel);
-
+        l6.add(fechar);
         JLabel algoritmo;
         if(tipoSimulacao == 0){
             algoritmo = new JLabel("Algoritmo : FIFO - First In First Out");
@@ -90,6 +99,8 @@ public class Simulacao {
         boxsimu.add(l3);
         boxsimu.add(l4);
         boxsimu.add(l5);
+        boxsimu.add(l6);
+
         this.frameSimu.getContentPane().add(boxsimu);
         this.frameSimu.setVisible(true);
     }
@@ -185,7 +196,7 @@ public class Simulacao {
 
     }
 
-    
+
     public void simularWsm(){
         long tempoInicial = System.currentTimeMillis();
         int[] paginas = getSequenciaPaginas();
