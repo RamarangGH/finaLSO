@@ -5,6 +5,10 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.lang.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 public class Simulacao {
     SequenciaPaginas paginas;
@@ -124,7 +128,131 @@ public class Simulacao {
 
     }
 
-    public void simularFifo(){
+    public void simularFifo(){                  /**SIMULACAO FIFO */
+        /** escolhe para sai a página que entrou na memória há mais tempo */
+        int[] pages = getSequenciaPaginas();
+        int capacity = getNumeroQuadros();  
+
+        //Para representar o conjunto de páginas atuais é usado
+        // um conjunto não ordenado (Set)
+        HashSet<Integer> pagesSet = new HashSet<>(capacity);      
+        //  Usamos o Queue para podermos armazenar as páginas
+        // no modo FIFO (fila ordenada, primeiro que entrar vai ser o primeiro a sair)
+        Queue<Integer> indexes = new LinkedList<>() ;
+
+        // Começa da página inicial
+        for (int i=0; i<pages.length; i++)
+        {
+            // Verifica se o conjunto pode conter mais páginas
+            if (pagesSet.size() < capacity)
+            {
+                // Insere a página no conjunto se ainda não estiver presente,
+                // o que representa uma page fault
+                if (!pagesSet.contains(pages[i]))
+                {
+                    pagesSet.add(pages[i]);
+
+                    // Incrementa a quantidade de page faults
+                    addPageFault();
+
+                    // Coloca a página atual na fila
+                    indexes.add(pages[i]);
+                }
+            }
+
+            // Se o conjunto de páginas estiver cheio, será necessário realizar FIFO
+            // Remove a primeira página da fila tanto do conjunto (pagesSet)
+            // quanto da fila (indexes) e insere a página atual (pages[i])
+            else
+            {
+                // Verfica se a página atual já não está dentro do conjunto
+                if (!pagesSet.contains(pages[i]))
+                {
+                    //A função .peek() retorna o primeiro elemento da fila, sem removê-lo
+                    //Aqui guardamor o primeiro elemento da fila na variável val
+                    int val = indexes.peek();
+
+                    //Aqui nós removemos o primeiro elemento da fila com o .poll()
+                    indexes.poll();
+
+                    // Aqui removemos a página de index guardada em val do conjunto de páginas
+                    pagesSet.remove(val);
+
+                    // Inserimos a página atual
+                    pagesSet.add(pages[i]);
+
+                   // Colocamos a página atual na fila
+                    indexes.add(pages[i]);
+
+                    // Incrementa a quantidade de page faults
+                    addPageFault();
+                }
+            }
+        }
+        setHitRate();
+    }
+
+
+    public void simularOtm(){               /** SIMULACAO OTM */
+        /** escolhe para sair a página que levará  mais tempo para ser novamente necessária */
+        int[] paginas = getSequenciaPaginas();
+        int n = getNumeroQuadros();
+        int[] memoria = new int[n];
+        int[] tempo = new int[n];
+        for(int i = 0; i<paginas.length; i++){
+            /**
+            System.out.print("i = ");
+            System.out.println(i);
+            System.out.print("memoria = ");
+            System.out.println(Arrays.toString(memoria));
+            */
+            Boolean hit = false;
+            int jmax = 0;
+            int tempomax = 0;
+            for(int j = 0; j<n; j++){
+                System.out.print("j = ");
+                System.out.println(j);
+                if(memoria[j]==paginas[i]){                         //verifica se existe a pagina no bloco de memoria
+                    hit = true;
+                }  
+                /**
+                System.out.print("hit = ");
+                System.out.println(Boolean.toString(hit));
+                */
+                int k = i;
+                while(( k<paginas.length-1 )&&( memoria[j] != paginas[k])){        //atualiza o tempo para a proxima aparição dessa pagina
+                    k++;
+                    /**
+                    System.out.print("k = ");
+                    System.out.println(k);
+                    System.out.print("memoria[j] != paginas[k] ? ");
+                    System.out.println(Boolean.toString(memoria[j] != paginas[k]));
+                    */
+                }
+                tempo[j] = k;
+                if(k > tempomax){                                   //acha o valor de tempo maximo
+                    tempomax = k;
+                    jmax = j;
+                }
+                /** 
+                System.out.print("tempo max = ");
+                System.out.print(tempomax);
+                System.out.print(" ; jmax = ");
+                System.out.println(jmax);
+                System.out.println("");
+                */
+            }
+            if(!hit){                                               //se o endereço de pagina falhou:
+                addPageFault();
+                memoria[jmax] = paginas[i];                         //alocar no bloco que contem a pagina com mais tempo de espera
+            }
+        }
+        setHitRate();
+    }
+
+
+    public void simularLru(){               /** SIMULACAO LRU */
+        /** escolhe para sair a página que não é referenciada há mais tempo */
         int[] paginas = getSequenciaPaginas();
         int n = getNumeroQuadros();
         int[] memoria = new int[n];
@@ -178,26 +306,16 @@ public class Simulacao {
                 historico[0] = paginas[i];
             }
         }
-        this.setHitRate();
+        setHitRate();
     }
 
 
-    public void simularOtm(){
-
-    }
-
-
-    public void simularLru(){
+    public void simularSc(){                /** SIMULACAO SC */
 
     }
 
 
-    public void simularSc(){
-
-    }
-
-
-    public void simularWsm(){
+    public void simularWsm(){               /** SIMULACAO WSM */
         long tempoInicial = System.currentTimeMillis();
         int[] paginas = getSequenciaPaginas();
         int n = getNumeroQuadros();
@@ -257,7 +375,7 @@ public class Simulacao {
                 }
             }
         }
-        this.setHitRate();
+        setHitRate();
     }
 
 }   
