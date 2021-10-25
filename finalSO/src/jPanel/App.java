@@ -149,7 +149,6 @@ public class App {
         quatro.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 simu.setNumeroQuadros(4);
-                System.out.println("4");
                 l12.setVisible(true);
             }
         });
@@ -171,7 +170,6 @@ public class App {
         sete.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 simu.setNumeroQuadros(7);
-                System.out.println("7");
                 l12.setVisible(true);
             }
         });

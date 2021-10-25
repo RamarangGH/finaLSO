@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
+import java.lang.*;
 
 public class Simulacao {
     SequenciaPaginas paginas;
@@ -37,8 +38,6 @@ public class Simulacao {
         pageFLabel.setText(Integer.toString(pageFaults));
     }
     public void setHitRate(){
-        System.out.println(this.pageFaults);
-        System.out.println(paginas.getSequencia().length);
         this.hitRate = (float) (1-(float) this.pageFaults/(float) paginas.getSequencia().length)*100;
         hitRLabel.setText(Float.toString(hitRate)); 
        }
@@ -115,7 +114,6 @@ public class Simulacao {
     }
 
     public void simularFifo(){
-        int[] test = new int[3];
         int[] paginas = getSequenciaPaginas();
         int n = getNumeroQuadros();
         int[] memoria = new int[n];
@@ -151,15 +149,13 @@ public class Simulacao {
                 }
                 historico[0] = temp;
             }else{                                  //se não:
-                this.pageFaults++;                  //pageFaults++
+                addPageFault();
                 int ultimo = historico[n-1]; //verificar o ultimo endereco de pagina a ter sido chamado
 
                 int j=0;
 
                 while(memoria[j]!= ultimo){         //achar a posicao desse ultimo endereco na memoria
                     j++;
-                    System.out.print("j ");
-                    System.out.println(j);
                 }
                 int enderecoMemoria = j;
 
@@ -169,24 +165,88 @@ public class Simulacao {
                     historico[j+1]=historico[j];    //atualizar o historico
                 }
                 historico[0] = paginas[i];
-
             }
         }
-
         this.setHitRate();
-
     }
+
+
     public void simularOtm(){
 
     }
+
+
     public void simularLru(){
 
     }
+
+
     public void simularSc(){
 
     }
-    public void simularWsm(){
 
+    
+    public void simularWsm(){
+        long tempoInicial = System.currentTimeMillis();
+        int[] paginas = getSequenciaPaginas();
+        int n = getNumeroQuadros();
+        int[] memoria = new int[n];
+        long[] tempos = new long[n];
+        long tmax;
+        int jmax;
+        long tau = 50;                              //tau = 50ms tempo do working set
+        for(int i=0; i<n; i++){                     //initialização
+            memoria[i] = -1;
+            tempos[i] = System.currentTimeMillis()-tempoInicial;
+        }
+        for(int i = 0; i<paginas.length; i++){ 
+            tmax = 0;
+            jmax = 0; 
+            Boolean hit = false;
+            for(int j = 0; j<n; j++){               //o endereco da pagina ja esta presente na memoria ?
+                /**
+                System.out.println("");
+                System.out.print("i : ");
+                System.out.print(i);
+                System.out.print("; j : ");
+                System.out.println(j);
+                System.out.print("Temps : ");
+                System.out.println(System.currentTimeMillis()-tempoInicial);
+                System.out.print("tempos : ");
+                System.out.println(Arrays.toString(tempos));
+                System.out.print("memoria : ");
+                System.out.println(Arrays.toString(memoria));
+                System.out.print("pagina : ");
+                System.out.println(paginas[i]);
+                */
+                if(paginas[i] == memoria[j]){       // Se sim :      
+                    tempos[j] = System.currentTimeMillis()-tempoInicial;                  //reiniciar tempo no endereco
+                    hit = true;
+                }else if(System.currentTimeMillis()-tempoInicial-tempos[j] > tau){   //Se não e o tempo de alocacao > tau :                       
+                    tmax = tau;                                               //priorizar a alocacao nesse endereco em caso de falha
+                    jmax = j;
+                }else{                                                  //se não e o tempo de alocacao <= tau :                                                      
+                    if(System.currentTimeMillis()-tempoInicial-tempos[j] > tmax){   //atualizar tempo maximo
+                        tmax = System.currentTimeMillis()-tempoInicial-tempos[j];
+                        jmax = j;
+                    }
+                }
+                /**
+                System.out.print("tmax : ");
+                System.out.println(tmax);
+                System.out.print("jmin : ");
+                System.out.println(jmax);
+                */
+                if(j == n-1){ 
+                    if(!hit){                                             //se parcorer toda a memoria sem achar onde alocar a pagina:
+                        addPageFault();                                     // adicionar um Page Fault
+                        memoria[jmax] = paginas[i];                             //alocar pagina nesse endereco de memoria
+                        tempos[jmax] = System.currentTimeMillis()-tempoInicial;               //reiniciar tempo do endereco
+                    }
+                }
+            }
+        }
+        this.setHitRate();
     }
 
-}
+}   
