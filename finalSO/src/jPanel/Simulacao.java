@@ -310,8 +310,76 @@ public class Simulacao {
     }
 
 
-    public void simularSc(){                                                        /** SIMULACAO SC */
+    public void simularSc(){
+        int[] paginas = getSequenciaPaginas();
+        int frames = getNumeroQuadros();
+        int[] arr = new int[frames];
 
+        int pointer,i,l,x,pf;
+
+        // Inicialmente consideramos que o quadro 0 deve ser substituído
+        pointer = 0;
+
+        // Número de page faults
+        pf = 0;
+
+        // Nenhuma página inicialmente no quadro,
+        // que é indicado pelo -1
+        Arrays.fill(arr,-1);
+
+        // Criamos um array de second chance
+        boolean second_chance[] = new boolean[frames];
+
+        // Pega o tamanho do array
+        l = paginas.length;
+
+        for(i = 0; i<l; i++)
+        {
+
+            x = paginas[i];
+            //achar um update
+            Boolean found = false;
+            for(int j = 0; j < frames; j++)
+            {
+                
+                if(arr[j] == x)
+                {
+                    // Marca que a página é apta para second chance
+                    second_chance[j] = true;
+    
+                    // found = true, já que houve um hit (já existente)
+                    // assim, não há necessidade de substituir nenhuma página
+                    found = true;
+                }
+            }
+            // Encontra se existe a necessidade de substituir
+            // qualquer página
+            if(!found)
+            {
+                // Seleciona e atualiza a página vítima
+                while(second_chance[pointer])
+                {
+                    // Marcado como false, já que tem uma chance
+                    // e será substituído na próxima vez, a menos que seja acessado novamente
+                    second_chance[pointer] = false;
+        
+        
+                    pointer = (pointer+1)%frames;
+                }
+                // Aqui nós achamos a página para substituir
+                if(!second_chance[pointer])
+                {
+                    // Substitui com a nova página
+                    arr[pointer] = x;
+    
+    
+                    pointer = (pointer+1)%frames;
+                }
+                //Atualiza a quantidade de page faults
+                addPageFault();
+            }
+        }
+        setHitRate();
     }
 
 
