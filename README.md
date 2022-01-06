@@ -1,3 +1,6 @@
+/!\ Essa versão não é a versão final do projeto, um erro de iteração foi corrigido e o wsm é dinamico (funciona com tempo real e não com iterações)
+
+
 # finaLSO
 Projeto final Sistemas Operacionais UFU
 
